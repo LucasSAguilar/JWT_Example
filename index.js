@@ -12,7 +12,10 @@ const gerarToken = (user) => {
 
 const verificarToken = (token) => {
   try {
-    return jwt.verify(token, senhaServer);
+    const data = jwt.verify(token, senhaServer);
+    console.log("Usuário: ", data.username);
+    console.log("Autorização do tipo: ", data.autorizacao);
+    return data
   } catch (err) {
     return err.message;
   }
@@ -21,14 +24,25 @@ const verificarToken = (token) => {
 // _______________ LADO DO CLIENTE ________________
 
 // Usuário de exemplo
-const userData = {
+const user_01 = {
   id: 1,
   username: "lucas",
   senha: "1234",
+  autorizacao: "básica"
 };
 
-const tokenRecebido = gerarToken(userData);
-const response = verificarToken(tokenRecebido);
+const user_02 = {
+  id: 2,
+  username: "gabi",
+  senha: "5678",
+  autorizacao: "máxima"
+};
 
-console.log(`O token recebido foi: ${tokenRecebido}`);
-console.log("A resposta da verificação do token foi:", response);
+
+const tokenUserUm = gerarToken(user_01);
+const tokenUserDois = gerarToken(user_02);
+
+verificarToken(tokenUserUm);
+verificarToken(tokenUserDois);
+
+
