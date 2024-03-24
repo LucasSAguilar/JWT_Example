@@ -5,8 +5,9 @@ import jwt from "jsonwebtoken";
 // Essa é a senha usada para criar e traduzir o token
 const senhaServer = "ABC1234";
 
+// JWT expirando em 2 segundos
 const gerarToken = (user) => {
-  const token = jwt.sign(user, senhaServer);
+  const token = jwt.sign(user, senhaServer, {expiresIn: '2s'});
   return token;
 };
 
@@ -17,6 +18,7 @@ const verificarToken = (token) => {
     console.log("Autorização do tipo: ", data.autorizacao);
     return data
   } catch (err) {
+    console.log(err.message);
     return err.message;
   }
 };
@@ -45,4 +47,9 @@ const tokenUserDois = gerarToken(user_02);
 verificarToken(tokenUserUm);
 verificarToken(tokenUserDois);
 
+// Exibindo o JWT quando expirar (mensagem de erro)
+
+setTimeout(()=>{
+  verificarToken(tokenUserUm)
+}, 3000)
 
